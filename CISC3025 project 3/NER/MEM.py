@@ -21,6 +21,7 @@ class MEMM():
         self.beta = 0
         self.max_iter = 0
         self.classifier = None
+        self.bound = 0
 
     def features(self, words, previous_label, position):
         """
@@ -35,7 +36,10 @@ class MEMM():
         features = {}
         """ Baseline Features """
         current_word = words[position]
+
+        # unigram 
         features['has_(%s)' % current_word] = 1
+
         features['prev_label'] = previous_label
         if position + 2 < len(previous_label):
             features['next_label'] = previous_label[position + 2] 
@@ -98,9 +102,10 @@ class MEMM():
         char_trigrams = [''.join(trigram) for trigram in zip(current_word, current_word[1:], current_word[2:])]
 
         # TODO: unigram?
-        # Add n-gram features
         # for char in current_word:
         #     features[f'char_{char}'] = 1
+
+        # Add n-gram features
         for bigram in char_bigrams:
             features[f'bigram_{bigram}'] = 1
         for trigram in char_trigrams:
@@ -154,30 +159,38 @@ class MEMM():
         classifier = MaxentClassifier.train(train_samples, max_iter=self.max_iter)
         self.classifier = classifier
 
+        self.record_train(features)
+
     def test(self):
         print('Testing classifier...')
         _, labels, features = self._preprocess_data(self.dev_path)
         results = [self.classifier.classify(n) for n in features]
 
         # use micro-average
+        print('fscore')
         f_score = fbeta_score(labels, results, average='macro', beta=self.beta)
+        print('precision')
         precision = precision_score(labels, results, average='macro')
+        print('recall')
         recall = recall_score(labels, results, average='macro')
+        print('accuracy')
         accuracy = accuracy_score(labels, results)
 
         print("%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n" %
               ("f_score=", f_score, "accuracy=", accuracy, "recall=", recall,
                "precision=", precision))
+        
+        self.record_test(f_score, accuracy, recall, precision)
 
         return True
     
-    def show_samples(self, bound):
+    def show_samples(self):
         """
         Show some sample probability distributions.
         """
         words, labels, features = self._preprocess_data(self.train_path)
 
-        (m, n) = bound
+        (m, n) = self.bound
         pdists = self.classifier.prob_classify_many(features[m:n])
 
         print('  Words          P(PERSON)  P(O)\n' + '-' * 40)
@@ -215,12 +228,13 @@ class MEMM():
     def adverb_like_suffix(word):
         return word[-2:] in ['ly']
     
-    def debug_example(self, bound):
+    def debug_example(self):
         words, labels, features = self._preprocess_data(self.dev_path)
         # words, labels, features = self._preprocess_data(self.train_path)
 
-        (m, n) = bound
+        (m, n) = self.bound
         pdists = self.classifier.prob_classify_many(features[m:n])
+        cnt = 0
 
         print('  Words          P(PERSON)  P(O)\n' + '-' * 40)
         for (word, label, pdist) in list(zip(words, labels, pdists))[m:n]:
@@ -233,3 +247,43 @@ class MEMM():
                 print(fmt % (word, pdist.prob('PERSON'), pdist.prob('O')))
                 cnt += 1
         print(f"Total Low Prob.: {cnt}")
+
+        self.record_debug(cnt)
+
+        
+
+    def record_train(self, features):
+        with open('record.txt', 'a') as output:
+            output.write('\n************************* config *************************\n')
+            output.write(f"beta: {self.beta}\nmax_iter: {self.max_iter}\n")
+            output.write('\n************************* train *************************\n')
+            output.write('features used:\n')
+            for d in features[0]:
+                if 'has_' in d:
+                    output.write('has_()\n')
+                elif 'prefix_' in d:
+                    output.write('prefix_\n')
+                elif 'suffix_' in d:
+                    output.write('suffix_\n')
+                elif 'bigram_' in d:
+                    output.write('bigram_\n')
+                elif '2_prev_has_' in d:
+                    output.write('2_prev_has_()\n')
+                else:
+                    output.write(f"{d}\n") 
+
+    def record_test(self, f_score, accuracy, recall, precision):
+        with open('record.txt', 'a') as output:
+            output.write('\n************************* config *************************\n')
+            output.write(f"beta: {self.beta}\nmax_iter: {self.max_iter}\n")
+            output.write('\n************************* test *************************\n')
+            output.write("%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n" %
+              ("f_score=", f_score, "accuracy=", accuracy, "recall=", recall,
+               "precision=", precision))
+
+    def record_debug(self, cnt):
+        with open('record.txt', 'a') as output:
+            output.write('\n************************* config *************************\n')
+            output.write(f"beta: {self.beta}\nmax_iter: {self.max_iter}\n")
+            output.write('\n************************* debug *************************\n')
+            output.write(f"Total Low Prob.: {cnt}\n")

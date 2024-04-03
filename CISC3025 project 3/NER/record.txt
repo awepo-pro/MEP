@@ -1,0 +1,61 @@
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+
+************************* train *************************
+features used:
+has_()prev_label
+Titlecase
+no_of_vowels
+no_of_consonants
+no_of_caps_greater_2
+all_caps
+contains_digits
+prev_no_of_caps
+prev_contains_digits
+length
+prev_length
+next_length
+has_()consecutive_words
+prev_consecutive_words
+prefix_suffix_bigram_has_()adjective
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+
+************************* train *************************
+features used:
+has_()prev_label
+Titlecase
+no_of_vowels
+no_of_consonants
+no_of_caps_greater_2
+all_caps
+contains_digits
+prev_no_of_caps
+prev_contains_digits
+length
+prev_length
+next_length
+has_()consecutive_words
+prev_consecutive_words
+prefix_suffix_bigram_has_()adjective
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+
+************************* test *************************
+f_score=        0.4752
+accuracy=       0.9387
+recall=         0.5000
+precision=      0.4693
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+
+************************* debug *************************
+Total Low Prob.: 3149

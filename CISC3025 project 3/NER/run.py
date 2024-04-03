@@ -16,27 +16,29 @@ def main():
 
     classifier = MEMM()
 
+    classifier.beta = BETA
+    classifier.max_iter = MAX_ITER
+    classifier.bound = BOUND
+
     if arg.train:
-        classifier.max_iter = MAX_ITER
         classifier.train()
         classifier.dump_model()
     if arg.dev:
         try:
             classifier.load_model()
-            classifier.beta = BETA
             classifier.test()
         except Exception as e:
             print(e)
     if arg.show:
         try:
             classifier.load_model()
-            classifier.show_samples(BOUND)
+            classifier.show_samples()
         except Exception as e:
             print(e)
     if arg.debug:
         try:
             classifier.load_model()
-            classifier.debug_example(BOUND)
+            classifier.debug_example()
         except Exception as e:
             print(e)
 
@@ -53,7 +55,7 @@ if __name__ == '__main__':
     #====== Customization ======
     # change beta doesn't change the result
     BETA = 0.5
-    MAX_ITER = 100
+    MAX_ITER = 1
     BOUND = (0, 51578)
     #==========================
 
