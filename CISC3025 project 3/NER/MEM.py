@@ -37,7 +37,7 @@ class MEMM():
         current_word = words[position]
         features['has_(%s)' % current_word] = 1
         features['prev_label'] = previous_label
-        if position + 2 < len(words):
+        if position + 2 < len(previous_label):
             features['next_label'] = previous_label[position + 2] 
         if current_word[0].isupper():
             features['Titlecase'] = 1
@@ -113,16 +113,17 @@ class MEMM():
         # features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
 
         # capital with a dot, ie: S. Law is a PERSON
-        features['capital_with_dot'] = 1 if current_word[1] == '.' and current_word[0].isupper() else 0
+        if len(current_word) == 2 and current_word[1] == '.' and current_word[0].isupper():
+            features['capital_with_dot'] = 1 
 
         # name with Punctuation Marks
         if previous_label == 'PERSON' and current_word[0] == ')':
             features['close_parentheses'] = 1 
-        if position + 2 < len(words) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
+        if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
             features['open_parentheses'] = 1 
         if previous_label == 'PERSON' and current_word[0] == '"':
             features['close_quotation'] = 1
-        if position + 2 < len(words) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
+        if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
             features['open_quotation'] = 1
 
         # name with 'De'
