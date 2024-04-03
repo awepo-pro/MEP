@@ -218,6 +218,7 @@ class MEMM():
     def debug_example(self, bound):
         words, labels, features = self._preprocess_data(self.dev_path)
         # words, labels, features = self._preprocess_data(self.train_path)
+        cnt = 0
 
         (m, n) = bound
         pdists = self.classifier.prob_classify_many(features[m:n])
