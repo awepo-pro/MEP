@@ -1,11 +1,12 @@
 
 ************************* config *************************
 beta: 0.5
-max_iter: 1
+max_iter: 100
 
 ************************* train *************************
 features used:
-has_()prev_label
+has_()
+prev_label
 Titlecase
 no_of_vowels
 no_of_consonants
@@ -17,45 +18,123 @@ prev_contains_digits
 length
 prev_length
 next_length
-has_()consecutive_words
+has_()
+consecutive_words
 prev_consecutive_words
-prefix_suffix_bigram_has_()adjective
+prefix_
+suffix_
+bigram_
+has_()
+adjective
 
 ************************* config *************************
 beta: 0.5
-max_iter: 1
-
-************************* train *************************
-features used:
-has_()prev_label
-Titlecase
-no_of_vowels
-no_of_consonants
-no_of_caps_greater_2
-all_caps
-contains_digits
-prev_no_of_caps
-prev_contains_digits
-length
-prev_length
-next_length
-has_()consecutive_words
-prev_consecutive_words
-prefix_suffix_bigram_has_()adjective
-
-************************* config *************************
-beta: 0.5
-max_iter: 1
+max_iter: 100
+model: ../../trained_models/9627-100iters.pkl
 
 ************************* test *************************
-f_score=        0.4752
-accuracy=       0.9387
-recall=         0.5000
-precision=      0.4693
+f_score=        0.9624
+accuracy=       0.9866
+recall=         0.8998
+precision=      0.9818
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+
+************************* debug *************************
+Total Low Prob.: 688
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+model: ../model.pkl
+
+************************* test *************************
+f_score=        0.9626
+accuracy=       0.9880
+recall=         0.9173
+precision=      0.9757
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+
+************************* debug *************************
+Total Low Prob.: 618
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+model: ../../trained_models/9627-100iters.pkl
+
+************************* test *************************
+f_score=        0.9544
+accuracy=       0.9864
+recall=         0.9120
+precision=      0.9667
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+
+************************* debug *************************
+Total Low Prob.: 697
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+model: ../../trained_models/9631-100iters.pkl
+
+************************* test *************************
+f_score=        0.9512
+accuracy=       0.9876
+recall=         0.9349
+precision=      0.9556
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+
+************************* debug *************************
+Total Low Prob.: 636
 
 ************************* config *************************
 beta: 0.5
 max_iter: 1
+model: ../models/model.pkl
+
+************************* test *************************
+f_score=        0.9626
+accuracy=       0.9880
+recall=         0.9173
+precision=      0.9757
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ../models/model.pkl
+debug path: ../data/train
 
 ************************* debug *************************
-Total Low Prob.: 3149
+Total Low Prob.: 7
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ../models/model.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 618
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ../models/model.pkl
+
+************************* test *************************
+f_score=        0.9626
+accuracy=       0.9880
+recall=         0.9173
+precision=      0.9757

@@ -12,6 +12,7 @@ import os
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
+import time
 
 
 class MEMM():
@@ -22,6 +23,7 @@ class MEMM():
         self.max_iter = 0
         self.classifier = None
         self.bound = 0
+        self.debug_path = "../data/train"
 
     def features(self, words, previous_label, position):
         """
@@ -167,13 +169,9 @@ class MEMM():
         results = [self.classifier.classify(n) for n in features]
 
         # use micro-average
-        print('fscore')
         f_score = fbeta_score(labels, results, average='macro', beta=self.beta)
-        print('precision')
         precision = precision_score(labels, results, average='macro')
-        print('recall')
         recall = recall_score(labels, results, average='macro')
-        print('accuracy')
         accuracy = accuracy_score(labels, results)
 
         print("%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n" %
@@ -206,11 +204,14 @@ class MEMM():
             print(fmt % (word, pdist.prob('PERSON'), pdist.prob('O')))
 
     def dump_model(self):
-        with open('../model.pkl', 'wb') as f:
+        history = time.ctime(time.time())[9:-5]
+        self.model = f'../models/model{history}.pkl'
+        with open(self.model, 'wb') as f:
             pickle.dump(self.classifier, f)
 
     def load_model(self):
-        with open('../model.pkl', 'rb') as f:
+        self.model = '../models/model.pkl'
+        with open(self.model, 'rb') as f:
             self.classifier = pickle.load(f)
 
     def _preprocess_data(self, path):
@@ -229,8 +230,7 @@ class MEMM():
         return word[-2:] in ['ly']
     
     def debug_example(self):
-        words, labels, features = self._preprocess_data(self.dev_path)
-        # words, labels, features = self._preprocess_data(self.train_path)
+        words, labels, features = self._preprocess_data(self.debug_path)
         cnt = 0
 
         (m, n) = self.bound
@@ -254,9 +254,14 @@ class MEMM():
         
 
     def record_train(self, features):
+        # for those who less than 10 iterations, we don't record them
+        if self.max_iter < 10:
+            return 
+        
         with open('record.txt', 'a') as output:
             output.write('\n************************* config *************************\n')
             output.write(f"beta: {self.beta}\nmax_iter: {self.max_iter}\n")
+            output.write(f"model: {self.model}\n")
             output.write('\n************************* train *************************\n')
             output.write('features used:\n')
             for d in features[0]:
@@ -277,6 +282,7 @@ class MEMM():
         with open('record.txt', 'a') as output:
             output.write('\n************************* config *************************\n')
             output.write(f"beta: {self.beta}\nmax_iter: {self.max_iter}\n")
+            output.write(f"model: {self.model}\n")
             output.write('\n************************* test *************************\n')
             output.write("%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n" %
               ("f_score=", f_score, "accuracy=", accuracy, "recall=", recall,
@@ -286,5 +292,7 @@ class MEMM():
         with open('record.txt', 'a') as output:
             output.write('\n************************* config *************************\n')
             output.write(f"beta: {self.beta}\nmax_iter: {self.max_iter}\n")
+            output.write(f"model: {self.model}\n")
+            output.write(f"debug path: {self.debug_path}\n")
             output.write('\n************************* debug *************************\n')
             output.write(f"Total Low Prob.: {cnt}\n")

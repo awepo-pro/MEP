@@ -18,9 +18,9 @@ def main(action=None):
     classifier.beta = BETA
     classifier.max_iter = MAX_ITER
     classifier.bound = BOUND
+    classifier.debug_path = DEBUG_PATH
 
-    if arg.train:
-        classifier.max_iter = MAX_ITER
+    if arg.train or action == 'train':
         classifier.train()
         classifier.dump_model()
     if arg.dev or action == 'dev':
@@ -57,6 +57,7 @@ if __name__ == '__main__':
     BETA = 0.5
     MAX_ITER = 1
     BOUND = (0, 51578)
+    DEBUG_PATH = '../data/dev'
     #==========================
 
     main()
