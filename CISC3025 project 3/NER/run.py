@@ -12,28 +12,27 @@ import argparse
 from MEM import MEMM
 
 
-def main():
-
+def main(action=None):
     classifier = MEMM()
 
-    if arg.train:
+    if arg.train or action == 'train':
         classifier.max_iter = MAX_ITER
         classifier.train()
         classifier.dump_model()
-    if arg.dev:
+    if arg.dev or action == 'dev':
         try:
             classifier.load_model()
             classifier.beta = BETA
             classifier.test()
         except Exception as e:
             print(e)
-    if arg.show:
+    if arg.show or action == 'show':
         try:
             classifier.load_model()
             classifier.show_samples(BOUND)
         except Exception as e:
             print(e)
-    if arg.debug:
+    if arg.debug or action == 'debug':
         try:
             classifier.load_model()
             classifier.debug_example(BOUND)
@@ -58,3 +57,8 @@ if __name__ == '__main__':
     #==========================
 
     main()
+
+    # main('train')
+    # main('dev')
+    # main('show')
+    # main('debug')
