@@ -1,3 +1,27 @@
 # MEP
 
 This is CISC3025 NLP project 3, which about implement name entity using maximum entropy model.
+
+# Makefile
+
+use `make` to run to program
+
+```shell
+make t
+```
+
+This is eqivalent to `python3 run.py -t`
+
+```shell
+make d
+```
+
+```shell
+make s
+```
+
+```shell
+make D
+```
+
+This is new command which is eqivalent to `python3 run.py -D`.
