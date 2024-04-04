@@ -22,7 +22,7 @@ def main(action=None):
 
     if arg.train or action == 'train':
         classifier.train()
-        classifier.dump_model()
+        # classifier.dump_model()
     if arg.dev or action == 'dev':
         try:
             classifier.load_model()
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     #====== Customization ======
     # change beta doesn't change the result
     BETA = 0.5
-    MAX_ITER = 1
+    MAX_ITER = 100
     BOUND = (0, 51578)
     DEBUG_PATH = '../data/dev'
     #==========================

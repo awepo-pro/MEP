@@ -104,8 +104,8 @@ class MEMM():
         char_trigrams = [''.join(trigram) for trigram in zip(current_word, current_word[1:], current_word[2:])]
 
         # TODO: unigram?
-        # for char in current_word:
-        #     features[f'char_{char}'] = 1
+        for char in current_word:
+            features[f'char_{char}'] = 1
 
         # Add n-gram features
         for bigram in char_bigrams:
@@ -117,7 +117,7 @@ class MEMM():
 
         # TODO: 'Billy' is a PERSON
         features['adjective'] = 1 if self.adjective_like_suffix(current_word) else 0
-        # features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
+        features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
 
         # capital with a dot, ie: S. Law is a PERSON
         if len(current_word) == 2 and current_word[1] == '.' and current_word[0].isupper():
@@ -160,6 +160,8 @@ class MEMM():
         train_samples = [(f, l) for (f, l) in zip(features, labels)]
         classifier = MaxentClassifier.train(train_samples, max_iter=self.max_iter)
         self.classifier = classifier
+
+        self.dump_model()
 
         self.record_train(features)
 
