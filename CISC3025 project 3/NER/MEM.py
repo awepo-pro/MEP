@@ -24,6 +24,7 @@ class MEMM():
         self.classifier = None
         self.bound = 0
         self.debug_path = "../data/train"
+        self.model = ''
 
     def features(self, words, previous_label, position):
         """
@@ -212,7 +213,9 @@ class MEMM():
             pickle.dump(self.classifier, f)
 
     def load_model(self):
-        self.model = '../models/model.pkl'
+        if self.model == '':
+            self.model = '..//models/model4 19:00:08.pkl'
+            print('*************** no model ***********************')
         with open(self.model, 'rb') as f:
             self.classifier = pickle.load(f)
 

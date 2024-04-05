@@ -1,7 +1,5 @@
 run:
-	python3 run.py -t
-	python3 run.py -d
-	python3 run.py -s
+	python3 run.py -t -d -s -D
 
 t:
 	python3 run.py -t

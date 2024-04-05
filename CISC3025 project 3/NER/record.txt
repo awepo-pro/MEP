@@ -142,3 +142,248 @@ precision=      0.9757
 ************************* config *************************
 beta: 0.5
 max_iter: 100
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+model: ../models/model4 19:00:08.pkl
+
+************************* train *************************
+features used:
+has_()
+prev_label
+Titlecase
+no_of_vowels
+no_of_consonants
+no_of_caps_greater_2
+all_caps
+contains_digits
+prev_no_of_caps
+prev_contains_digits
+length
+prev_length
+next_length
+has_()
+consecutive_words
+prev_consecutive_words
+prefix_
+suffix_
+char_E
+char_U
+bigram_
+has_()
+adjective
+adverb
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+model: ..//models/model4 19:00:08.pkl
+
+************************* test *************************
+f_score=        0.9627
+accuracy=       0.9879
+recall=         0.9169
+precision=      0.9760
+
+************************* config *************************
+beta: 0.5
+max_iter: 100
+model: ..//models/model4 19:00:08.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 619
+
+************************* config *************************
+beta: 0.5
+max_iter: 200
+model: ../models/model5 01:49:33.pkl
+
+************************* train *************************
+features used:
+has_()
+prev_label
+Titlecase
+no_of_vowels
+no_of_consonants
+no_of_caps_greater_2
+all_caps
+contains_digits
+prev_no_of_caps
+prev_contains_digits
+length
+prev_length
+next_length
+has_()
+consecutive_words
+prev_consecutive_words
+prefix_
+suffix_
+char_E
+char_U
+bigram_
+has_()
+adjective
+adverb
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+
+************************* test *************************
+f_score=        0.9627
+accuracy=       0.9879
+recall=         0.9169
+precision=      0.9760
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+
+************************* test *************************
+f_score=        0.9627
+accuracy=       0.9879
+recall=         0.9169
+precision=      0.9760
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 619
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+
+************************* test *************************
+f_score=        0.9627
+accuracy=       0.9879
+recall=         0.9169
+precision=      0.9760
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 619
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 619
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+
+************************* test *************************
+f_score=        0.9627
+accuracy=       0.9879
+recall=         0.9169
+precision=      0.9760
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ..//models/model4 19:00:08.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 619
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ../models/model5 02:06:39.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 3149
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ../models/model5 02:09:12.pkl
+
+************************* test *************************
+f_score=        0.4752
+accuracy=       0.9387
+recall=         0.5000
+precision=      0.4693
+
+************************* config *************************
+beta: 0.5
+max_iter: 1
+model: ../models/model5 02:09:12.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 3149
+
+************************* config *************************
+beta: 0.5
+max_iter: 300
+model: ../models/model5 14:13:37.pkl
+
+************************* train *************************
+features used:
+has_()
+prev_label
+Titlecase
+no_of_vowels
+no_of_consonants
+no_of_caps_greater_2
+all_caps
+contains_digits
+prev_no_of_caps
+prev_contains_digits
+length
+prev_length
+next_length
+has_()
+consecutive_words
+prev_consecutive_words
+prefix_
+suffix_
+char_E
+char_U
+bigram_
+has_()
+adjective
+adverb
+
+************************* config *************************
+beta: 0.5
+max_iter: 300
+model: ../models/model5 14:13:37.pkl
+
+************************* test *************************
+f_score=        0.9646
+accuracy=       0.9887
+recall=         0.9227
+precision=      0.9767
+
+************************* config *************************
+beta: 0.5
+max_iter: 300
+model: ../models/model5 14:13:37.pkl
+debug path: ../data/dev
+
+************************* debug *************************
+Total Low Prob.: 582

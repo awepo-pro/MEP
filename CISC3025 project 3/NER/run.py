@@ -55,7 +55,7 @@ if __name__ == '__main__':
     #====== Customization ======
     # change beta doesn't change the result
     BETA = 0.5
-    MAX_ITER = 100
+    MAX_ITER = 300
     BOUND = (0, 51578)
     DEBUG_PATH = '../data/dev'
     #==========================
