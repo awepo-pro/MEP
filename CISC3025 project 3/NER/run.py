@@ -18,11 +18,13 @@ def main(action=None):
     classifier.beta = BETA
     classifier.max_iter = MAX_ITER
     classifier.bound = BOUND
+    classifier.model_path = MODEL_PATH
     classifier.debug_path = DEBUG_PATH
+    classifier.use_custom_features = USE_CUSTOM_FEATURES
 
     if arg.train or action == 'train':
         classifier.train()
-        # classifier.dump_model()
+        classifier.dump_model()
     if arg.dev or action == 'dev':
         try:
             classifier.load_model()
@@ -55,14 +57,16 @@ if __name__ == '__main__':
     #====== Customization ======
     # change beta doesn't change the result
     BETA = 0.5
-    MAX_ITER = 300
-    BOUND = (0, 51578)
+    MAX_ITER = 10
+    BOUND = (0, 20)
+    MODEL_PATH = '../model.pkl'
     DEBUG_PATH = '../data/dev'
+    USE_CUSTOM_FEATURES = False
     #==========================
 
     main()
 
     # main('train')
-    # main('dev')
-    # main('show')
-    # main('debug')
+    main('dev')
+    main('show')
+    main('debug')
