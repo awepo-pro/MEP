@@ -16,7 +16,6 @@ from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
 import time
-import cmudict  # cmudict is a library for counting syllables in a word
 
 
 class MEMM():
@@ -75,31 +74,17 @@ class MEMM():
             features['prev_length'] = len(words[position-1]) if position > 0 else 0
             features['next_length'] = len(words[position+1]) if position < len(words)-1 else 0
 
-            # A very rough estimate of the number of syllables in a word, seems like it is often wrong for weird words
-            # features['syllables'] = len(cmudict.dict().get(current_word.lower(), []))
-
             if position > 0:
                 features[f'prev_has_{words[position - 1]}'] = 1
             if position < len(words)-1:
                 features[f'next_has_{words[position + 1]}'] = 1
 
-            features['consecutive_words'] = 0
-            sentence_end = position
-            while sentence_end < len(words):
-                if words[sentence_end].isalpha():
-                    features['consecutive_words'] += 1
-                    sentence_end += 1
-                else:
-                    break
-
-            features['prev_consecutive_words'] = 0
-            sentence_start = position
-            while sentence_start >= 0:
-                if words[sentence_start].isalpha():
-                    features['prev_consecutive_words'] += 1
-                    sentence_start -= 1
-                else:
-                    break
+            features['relative_position_from_fullstop'] = self.relative_position_from(words, position, '.')
+            features['relative_position_to_fullstop'] = self.relative_position_to(words, position, '.')
+            features['relative_position_from_comma'] = self.relative_position_from(words, position, ',')
+            features['relative_position_to_comma'] = self.relative_position_to(words, position, ',')
+            features['relative_position_from_quotation'] = self.relative_position_from(words, position, '"')
+            features['relative_position_to_quotation'] = self.relative_position_to(words, position, '"')
 
             features[f'prefix_{current_word[:3]}'] = 1
             features[f'suffix_{current_word[-3:]}'] = 1
@@ -130,18 +115,9 @@ class MEMM():
             if len(current_word) == 2 and current_word[1] == '.' and current_word[0].isupper():
                 features['capital_with_dot'] = 1
 
-            # name with Punctuation Marks
-            if previous_label == 'PERSON' and current_word[0] == ')':
-                features['close_parentheses'] = 1
-            if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
-                features['open_parentheses'] = 1
-            if previous_label == 'PERSON' and current_word[0] == '"':
-                features['close_quotation'] = 1
-            if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
-                features['open_quotation'] = 1
-
-            # if re.match(r'[,.()]', current_word):
-            #     features['punctuation'] = 100
+            if re.match(r'[,.()"\']', current_word):
+                features['punctuation'] = 1
+            # Problem: Robert " Hands of Stone " Duran is a PERSON
 
             # name with 'De'
             if current_word == 'De':
@@ -156,6 +132,27 @@ class MEMM():
     @staticmethod
     def adverb_like_suffix(word):
         return word[-2:] in ['ly']
+
+    @staticmethod
+    def relative_position_from(words: list, position: int, target: str) -> int:
+        """Find the relative position of the current word"""
+        start = position
+        while start >= 0:
+            if words[start] != target:
+                start -= 1
+            else:
+                break
+        return position - start
+
+    @staticmethod
+    def relative_position_to(words: list, position: int, target: str) -> int:
+        end = position
+        while end < len(words):
+            if words[end] != target:
+                end += 1
+            else:
+                break
+        return end - position
 
     def load_data(self, filename):
         words = []
