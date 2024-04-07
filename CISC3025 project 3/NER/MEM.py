@@ -214,7 +214,7 @@ class MEMM():
 
     def load_model(self):
         if self.model == '':
-            self.model = '..//models/model4 19:00:08.pkl'
+            self.model = '..//models/model4 190008.pkl'
             print('*************** no model ***********************')
         with open(self.model, 'rb') as f:
             self.classifier = pickle.load(f)
