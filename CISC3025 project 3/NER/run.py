@@ -44,6 +44,7 @@ def main(action=None):
     if arg.debug or action == 'debug':
         try:
             classifier.load_model()
+            print(classifier.classifier.show_most_informative_features(40))
             classifier.debug_example()
         except Exception as e:
             print(e)
@@ -62,7 +63,7 @@ if __name__ == '__main__':
     # change beta doesn't change the result
     BETA = 0.5
     MAX_ITER = 10
-    BOUND = (0, -1)
+    BOUND = (0, 20)
     MODEL_PATH = '../model.pkl'
     DEBUG_PATH = '../data/dev'
     USE_CUSTOM_FEATURES = True
@@ -70,7 +71,7 @@ if __name__ == '__main__':
 
     main()
 
-    main('train')
-    main('dev')
+    # main('train')
+    # main('dev')
     # main('show')
-    main('debug')
+    # main('debug')
