@@ -178,7 +178,6 @@ class MEMM():
         self.classifier = classifier
 
         self.dump_model()
-
         self.record_train(features)
     
     def test(self):
@@ -203,7 +202,7 @@ class MEMM():
     def _preprocess_data(self, path):
         words, labels = self.load_data(path)
         previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
+        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]  # type: ignore
 
         return words, labels, features
 
@@ -229,8 +228,8 @@ class MEMM():
             print(fmt % (word, pdist.prob('PERSON'), pdist.prob('O')))
 
     def dump_model(self):
-        with open(self.model_path, 'rb') as f:
-            self.classifier = pickle.load(f)
+        with open(self.model_path, 'wb') as f:
+            pickle.dump(self.classifier, f)
     
     def load_model(self):
         with open(self.model_path, 'rb') as f:
