@@ -9,6 +9,8 @@
 # --------------------------------------------------
 
 import argparse
+import timeit
+
 from MEM import MEMM
 
 
@@ -23,8 +25,10 @@ def main(action=None):
     classifier.use_custom_features = USE_CUSTOM_FEATURES
 
     if arg.train or action == 'train':
+        current_time = timeit.default_timer()
         classifier.train()
         classifier.dump_model()
+        print("Training time: %.2fs" % (timeit.default_timer() - current_time))
     if arg.dev or action == 'dev':
         try:
             classifier.load_model()
@@ -58,15 +62,15 @@ if __name__ == '__main__':
     # change beta doesn't change the result
     BETA = 0.5
     MAX_ITER = 10
-    BOUND = (0, 20)
+    BOUND = (0, -1)
     MODEL_PATH = '../model.pkl'
     DEBUG_PATH = '../data/dev'
-    USE_CUSTOM_FEATURES = False
+    USE_CUSTOM_FEATURES = True
     #==========================
 
     main()
 
-    # main('train')
+    main('train')
     main('dev')
-    main('show')
+    # main('show')
     main('debug')
