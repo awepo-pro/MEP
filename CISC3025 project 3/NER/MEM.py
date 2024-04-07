@@ -143,10 +143,18 @@ class MEMM():
 
         return features
 
+    @staticmethod
+    def adjective_like_suffix(word):
+        return word[-2:] in ['al', 'ic'] or word[-3:] in ['ous', 'ful', 'ive', 'ish'] or word[-4:] in ['less', 'able']
+
+    @staticmethod
+    def adverb_like_suffix(word):
+        return word[-2:] in ['ly']
+
     def load_data(self, filename):
         words = []
         labels = []
-        
+
         for line in open(filename, "r", encoding="utf-8"):
             doublet = line.strip().split("\t")
             if len(doublet) < 2:     # remove emtpy lines
@@ -167,7 +175,7 @@ class MEMM():
         self.dump_model()
 
         self.record_train(features)
-
+    
     def test(self):
         print('Testing classifier...')
         _, labels, features = self._preprocess_data(self.dev_path)
@@ -182,11 +190,11 @@ class MEMM():
         print("%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n%-15s %.4f\n" %
               ("f_score=", f_score, "accuracy=", accuracy, "recall=", recall,
                "precision=", precision))
-        
+
         self.record_test(f_score, accuracy, recall, precision)
 
         return True
-    
+
     def show_samples(self):
         """
         Show some sample probability distributions.
@@ -215,21 +223,13 @@ class MEMM():
     def load_model(self):
         with open(self.model_path, 'rb') as f:
             self.classifier = pickle.load(f)
-
+    
     def _preprocess_data(self, path):
         words, labels = self.load_data(path)
         previous_labels = ["O"] + labels
         features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
 
         return words, labels, features
-    
-    @staticmethod
-    def adjective_like_suffix(word):
-        return word[-2:] in ['al', 'ic'] or word[-3:] in ['ous', 'ful', 'ive', 'ish'] or word[-4:] in ['less', 'able']
-
-    @staticmethod
-    def adverb_like_suffix(word):
-        return word[-2:] in ['ly']
     
     def debug_example(self):
         words, labels, features = self._preprocess_data(self.debug_path)
