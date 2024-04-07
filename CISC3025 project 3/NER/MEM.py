@@ -153,6 +153,15 @@ class MEMM():
             labels.append(doublet[1])
 
         return words, labels
+    
+    def _preprocess_data(self, path):
+        words, labels = self.load_data(path)
+        previous_labels = ["O"] + labels
+        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
+
+        return words, labels, features
+    
+# ************************* main functions ************************* #
 
     def train(self):
         print('Training classifier...')
@@ -219,12 +228,7 @@ class MEMM():
         with open(self.model, 'rb') as f:
             self.classifier = pickle.load(f)
 
-    def _preprocess_data(self, path):
-        words, labels = self.load_data(path)
-        previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
-
-        return words, labels, features
+# ************************* helper functions ************************* #
     
     @staticmethod
     def adjective_like_suffix(word):
@@ -234,6 +238,7 @@ class MEMM():
     def adverb_like_suffix(word):
         return word[-2:] in ['ly']
     
+# ************************* debug functions ************************* #
     def debug_example(self):
         words, labels, features = self._preprocess_data(self.debug_path)
         cnt = 0
