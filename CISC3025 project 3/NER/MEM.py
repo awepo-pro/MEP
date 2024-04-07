@@ -9,6 +9,9 @@
 # --------------------------------------------------
 
 import os
+import re
+from typing import Literal
+
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
@@ -28,7 +31,7 @@ class MEMM():
         self.model_path = "../model.pkl"
         self.use_custom_features = False
 
-    def features(self, words, previous_label, position):
+    def features(self, words: list[str], previous_label: Literal['O', "Person"], position: int) -> dict[str, int]:
         """
         Note: The previous label of current word is the only visible label.
 
@@ -128,14 +131,16 @@ class MEMM():
                 features['capital_with_dot'] = 1
 
             # name with Punctuation Marks
-            if previous_label == 'PERSON' and current_word[0] == ')':
-                features['close_parentheses'] = 1
-            if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
-                features['open_parentheses'] = 1
-            if previous_label == 'PERSON' and current_word[0] == '"':
-                features['close_quotation'] = 1
-            if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
-                features['open_quotation'] = 1
+            # if previous_label == 'PERSON' and current_word[0] == ')':
+            #     features['close_parentheses'] = 1
+            # if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
+            #     features['open_parentheses'] = 1
+            # if previous_label == 'PERSON' and current_word[0] == '"':
+            #     features['close_quotation'] = 1
+            # if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
+            #     features['open_quotation'] = 1
+            if re.match(r'[,.()]', current_word):
+                features['punctuation'] = 100
 
             # name with 'De'
             if current_word == 'De':
@@ -195,6 +200,13 @@ class MEMM():
 
         return True
 
+    def _preprocess_data(self, path):
+        words, labels = self.load_data(path)
+        previous_labels = ["O"] + labels
+        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
+
+        return words, labels, features
+
     def show_samples(self):
         """
         Show some sample probability distributions.
@@ -219,17 +231,10 @@ class MEMM():
     def dump_model(self):
         with open(self.model_path, 'rb') as f:
             self.classifier = pickle.load(f)
-
+    
     def load_model(self):
         with open(self.model_path, 'rb') as f:
             self.classifier = pickle.load(f)
-    
-    def _preprocess_data(self, path):
-        words, labels = self.load_data(path)
-        previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
-
-        return words, labels, features
     
     def debug_example(self):
         words, labels, features = self._preprocess_data(self.debug_path)
