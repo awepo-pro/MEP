@@ -131,16 +131,17 @@ class MEMM():
                 features['capital_with_dot'] = 1
 
             # name with Punctuation Marks
-            # if previous_label == 'PERSON' and current_word[0] == ')':
-            #     features['close_parentheses'] = 1
-            # if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
-            #     features['open_parentheses'] = 1
-            # if previous_label == 'PERSON' and current_word[0] == '"':
-            #     features['close_quotation'] = 1
-            # if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
-            #     features['open_quotation'] = 1
-            if re.match(r'[,.()]', current_word):
-                features['punctuation'] = 100
+            if previous_label == 'PERSON' and current_word[0] == ')':
+                features['close_parentheses'] = 1
+            if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
+                features['open_parentheses'] = 1
+            if previous_label == 'PERSON' and current_word[0] == '"':
+                features['close_quotation'] = 1
+            if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
+                features['open_quotation'] = 1
+
+            # if re.match(r'[,.()]', current_word):
+            #     features['punctuation'] = 100
 
             # name with 'De'
             if current_word == 'De':
