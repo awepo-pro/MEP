@@ -177,7 +177,6 @@ class MEMM():
         classifier = MaxentClassifier.train(train_samples, max_iter=self.max_iter)
         self.classifier = classifier
 
-        self.dump_model()
         self.record_train(features)
     
     def test(self):
