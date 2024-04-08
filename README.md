@@ -1,6 +1,13 @@
 # MEP
 
-This is CISC3025 NLP project 3, which about implement name entity using maximum entropy model.
+This is CISC3025 NLP project 3, which about implementing name entity using maximum entropy model.
+
+# web (PHP)
+```shell
+php index.php
+php -S localhost:8000
+```
+open `http://localhost:8000` in browser
 
 # Makefile
 
@@ -24,5 +31,4 @@ make s
 make D
 ```
 
-This is new command which is eqivalent to `python3 run.py -D`. It shows the samples that with wrong judgement and 
-count the number of such samples
+This is new command which is eqivalent to `python3 run.py -D`. It shows the samples that with wrong judgement and count the number of such samples
