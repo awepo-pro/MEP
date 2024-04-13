@@ -12,7 +12,3 @@ d:
 
 D:
 	python3 run.py -D
-
-clean:
-	rm  __pycache__ *.pyc
-	rm ../model.pkl

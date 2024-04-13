@@ -98,8 +98,8 @@ class MEMM():
             char_trigrams = [''.join(trigram) for trigram in zip(current_word, current_word[1:], current_word[2:])]
 
             # Add n-gram features
-            for char in current_word:
-                features[f'char_{char}'] = 1
+            # for char in current_word:
+            #     features[f'char_{char}'] = 1
             for bigram in char_bigrams:
                 features[f'bigram_{bigram}'] = 1
             for trigram in char_trigrams:
@@ -107,9 +107,9 @@ class MEMM():
 
             features['2_prev_has_(%s)' % words[position - 2]] = 1 if position > 1 else 0
 
-            # TODO: 'Billy' is a PERSON
+            # TODO: 'Billy' is a PERSON, don't use adverb one
             features['adjective'] = 1 if self.adjective_like_suffix(current_word) else 0
-            features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
+            # features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
 
             # capital with a dot, ie: S. Law is a PERSON
             if len(current_word) == 2 and current_word[1] == '.' and current_word[0].isupper():
@@ -236,7 +236,6 @@ class MEMM():
     def dump_model(self):
         with open(self.model_path, 'wb') as f:
             pickle.dump(self.classifier, f)
-<<<<<<< HEAD
 
     def load_model(self):
         if self.model == '':
@@ -246,8 +245,6 @@ class MEMM():
             self.classifier = pickle.load(f)
 
 # ************************* helper functions ************************* #
-=======
->>>>>>> f7088015f088b8966195f8a4f6ad1fa55ce72402
     
     def load_model(self):
         with open(self.model_path, 'rb') as f:
