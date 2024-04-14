@@ -1,16 +1,13 @@
-run:
-	python3 run.py -t -d -s -D
-
-t:
+train:
 	python3 run.py -t
 
-s:
+show:
 	python3 run.py -s
 
-d:
+test:
 	python3 run.py -d
 
-D:
+debug:
 	python3 run.py -D
 
 clean:
