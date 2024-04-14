@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+    text-decoration: none;
+}
+
+a {
+    color: white;
+}
+
+header {
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-top: 20px;
+    padding-bottom: 20px;   
+    display: flex;
+    justify-content: space-between;
+    background: #161616;
+    color: white;
+    font-weight: 500;
+    font-size: 1.5em;
+}
+
+body {
+    background-color: #000;
+}
+
+.container {
+    color: white;
+    width: 60%;
+    margin: 0 auto;
+    /* background: yellow; */
+    min-height: 100vh;
+}
+
+.container form {
+    text-align: center;
+    /* border: 1px solid #161616; */
+    border-radius: 30px;
+    /* background: red; */
+}
+
+textarea {
+    padding: 50px 50px 10px;
+    border: none;
+    outline: none;
+    border-radius: 30px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    background: #ECE8F7;
+    font-size: 20px;
+}
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    background: #161616;
+    color: white;
+    cursor: pointer;
+    font-size: 2em;
+
+    padding: 15px 40px;
+    color: #FFF;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+}
+  
+
+.btn::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+  /* glow */
+.btn::before {
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #FF0000, #FF7300, #FFFB00, #48FF00,
+      #00FFD5, #002BFF, #FF00C8, #FF0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 600%;
+    z-index: -1;
+    width: calc(100% + 4px);
+    height:  calc(100% + 4px);
+    filter: blur(8px);
+    animation: glowing 20s linear infinite;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+    opacity: 0;
+  }
+  
+  @keyframes glowing {
+    0% {background-position: 0 0;}
+    50% {background-position: 400% 0;}
+    100% {background-position: 0 0;}
+  }
+  
+  /* hover */
+  .btn:hover::before {
+    opacity: 1;
+  }
+  
+  .btn:active:after {
+    background: transparent;
+  }
+  
+  .btn:active {
+    color: #000;
+    font-weight: bold;
+  }
+
+#title2 {
+    padding-top: 20%;
+    text-align: center;
+    font-size: 3em;
+}
+
+.output {
+    margin-top: 10%;
+    border: 3px solid #32542D;
+    padding: 50px;
+    border-radius: 30px;
+    /* height: 12em; */
+    /* background: red; */
+    font-size: 20px;
+}
+
+.highlighted {
+    background: #1C73E8;
+    padding: 5px;
+    border-radius: 10px;
+}
