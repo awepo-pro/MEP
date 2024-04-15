@@ -57,11 +57,8 @@ class MEMM():
             # Features are allowed to be non-binary.
             # In maximum entropy models, joint-features are required to have numeric values.
             features['no_of_vowels'] = sum([1 for i in current_word if i in 'aeiou'])
-
-            # TODO: no of consonants = len(current_word) - no of vowels
             features['no_of_consonants'] = len(current_word) - features['no_of_vowels']
 
-            # TODO: if more than two uppercase letters, return false
             features['no_of_caps_greater_2'] = sum([1 for i in current_word[:2] if i.isupper()]) # useful
             features['all_caps'] = 1 if current_word.isupper() else 0
 
@@ -79,12 +76,12 @@ class MEMM():
             if position < len(words)-1:
                 features[f'next_has_{words[position + 1]}'] = 1
 
-            features['relative_position_from_fullstop'] = self.relative_position_from(words, position, '.')
-            features['relative_position_to_fullstop'] = self.relative_position_to(words, position, '.')
-            features['relative_position_from_comma'] = self.relative_position_from(words, position, ',')
-            features['relative_position_to_comma'] = self.relative_position_to(words, position, ',')
-            features['relative_position_from_quotation'] = self.relative_position_from(words, position, '"')
-            features['relative_position_to_quotation'] = self.relative_position_to(words, position, '"')
+            # features['relative_position_from_fullstop'] = self.relative_position_from(words, position, '.')
+            # features['relative_position_to_fullstop'] = self.relative_position_to(words, position, '.')
+            # features['relative_position_from_comma'] = self.relative_position_from(words, position, ',')
+            # features['relative_position_to_comma'] = self.relative_position_to(words, position, ',')
+            # features['relative_position_from_quotation'] = self.relative_position_from(words, position, '"')
+            # features['relative_position_to_quotation'] = self.relative_position_to(words, position, '"')
 
             features[f'prefix_{current_word[:3]}'] = 1
             features[f'suffix_{current_word[-3:]}'] = 1
@@ -92,14 +89,16 @@ class MEMM():
                 features[f'prev_prefix_{words[position-1][:3]}'] = 1
                 features[f'prev_suffix_{words[position-1][-3:]}'] = 1
 
+            features['consecutive_words'] = self.relative_position_to(words, position, '.')
+            features['prev_consecutive_words'] = self.relative_position_from(words, position, '.')
             # TODO: check if the word is character or digit
             # Extract character n-grams
             char_bigrams = [''.join(bigram) for bigram in zip(current_word, current_word[1:])]
             char_trigrams = [''.join(trigram) for trigram in zip(current_word, current_word[1:], current_word[2:])]
 
             # Add n-gram features
-            # for char in current_word:
-            #     features[f'char_{char}'] = 1
+            for char in current_word:
+                features[f'char_{char}'] = 1
             for bigram in char_bigrams:
                 features[f'bigram_{bigram}'] = 1
             for trigram in char_trigrams:
@@ -109,14 +108,14 @@ class MEMM():
 
             # TODO: 'Billy' is a PERSON, don't use adverb one
             features['adjective'] = 1 if self.adjective_like_suffix(current_word) else 0
-            # features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
+            features['adverb'] = 1 if self.adverb_like_suffix(current_word) else 0
 
             # capital with a dot, ie: S. Law is a PERSON
             if len(current_word) == 2 and current_word[1] == '.' and current_word[0].isupper():
                 features['capital_with_dot'] = 1
 
-            if re.match(r'[,.()"\']', current_word):
-                features['punctuation'] = 1
+            # if re.match(r'[,.()"\']', current_word):
+            #     features['punctuation'] = 1
             # Problem: Robert " Hands of Stone " Duran is a PERSON
 
             # name with 'De'
@@ -231,10 +230,111 @@ class MEMM():
             words = f.read().split()
 
         labels: list[Literal['O', 'Person']] = ['O']
-        for word in words:
-            features = self.features(words, labels[-1], len(labels))
+        for n, word in enumerate(words):
+            features = self.features_best_model(words, labels[-1], n)
             labels.append(self.classifier.classify(features))
         return list(zip(words, labels[1:]))
+
+    @staticmethod
+    def features_best_model(words, previous_label, position):
+        features = {}
+        """ Baseline Features """
+        current_word = words[position]
+
+        # unigram
+        features['has_(%s)' % current_word] = 1
+
+        features['prev_label'] = previous_label
+        if position + 2 < len(previous_label):
+            features['next_label'] = previous_label[position + 2]
+        if current_word[0].isupper():
+            features['Titlecase'] = 1
+
+        features['no_of_vowels'] = sum([1 for i in current_word if i in 'aeiou'])
+        features['no_of_consonants'] = len(current_word) - features['no_of_vowels']
+
+        features['no_of_caps_greater_2'] = sum([1 for i in current_word[:2] if i.isupper()]) # useful
+        features['all_caps'] = 1 if current_word.isupper() else 0
+
+        features['contains_digits'] = 1 if any(i.isdigit() for i in current_word) else 0  # useful
+
+        features['prev_no_of_caps'] = sum([1 for i in words[position-1] if i.isupper()]) if position > 0 else 0
+        features['prev_contains_digits'] = 1 if position > 0 and any(i.isdigit() for i in words[position-1]) else 0
+
+        features['length'] = len(current_word)
+        features['prev_length'] = len(words[position-1]) if position > 0 else 0
+        features['next_length'] = len(words[position+1]) if position < len(words)-1 else 0
+
+        if position > 0:
+            features[f'prev_has_{words[position - 1]}'] = 1
+        if position < len(words)-1:
+            features[f'next_has_{words[position + 1]}'] = 1
+
+        features['consecutive_words'] = 0
+        i = position
+        while i < len(words):
+            if words[i].isalpha():
+                features['consecutive_words'] += 1
+                i += 1
+            else:
+                break
+
+        features['prev_consecutive_words'] = 0
+        i = position
+        while i >= 0:
+            if words[i].isalpha():
+                features['prev_consecutive_words'] += 1
+                i -= 1
+            else:
+                break
+
+        features[f'prefix_{current_word[:3]}'] = 1
+        features[f'suffix_{current_word[-3:]}'] = 1
+        if position > 0:
+            features[f'prev_prefix_{words[position-1][:3]}'] = 1
+            features[f'prev_suffix_{words[position-1][-3:]}'] = 1
+
+        # TODO: check if the word is character or digit
+        # Extract character n-grams
+        char_bigrams = [''.join(bigram) for bigram in zip(current_word, current_word[1:])]
+        char_trigrams = [''.join(trigram) for trigram in zip(current_word, current_word[1:], current_word[2:])]
+
+        # TODO: unigram?
+        for char in current_word:
+            features[f'char_{char}'] = 1
+
+        # Add n-gram features
+        for bigram in char_bigrams:
+            features[f'bigram_{bigram}'] = 1
+        for trigram in char_trigrams:
+            features[f'trigram_{trigram}'] = 1
+
+        features['2_prev_has_(%s)' % words[position - 2]] = 1 if position > 1 else 0
+
+        # TODO: 'Billy' is a PERSON
+        features['adjective'] = 1 if MEMM.adjective_like_suffix(current_word) else 0
+        features['adverb'] = 1 if MEMM.adverb_like_suffix(current_word) else 0
+
+        # capital with a dot, ie: S. Law is a PERSON
+        if len(current_word) == 2 and current_word[1] == '.' and current_word[0].isupper():
+            features['capital_with_dot'] = 1
+
+        # name with Punctuation Marks
+        if previous_label == 'PERSON' and current_word[0] == ')':
+            features['close_parentheses'] = 1
+        if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '(':
+            features['open_parentheses'] = 1
+        if previous_label == 'PERSON' and current_word[0] == '"':
+            features['close_quotation'] = 1
+        if position + 2 < len(previous_label) and previous_label[position + 2] == 'PERSON' and current_word[0] == '"':
+            features['open_quotation'] = 1
+
+        # name with 'De'
+        if current_word == 'De':
+            features['De'] = 1
+
+        return features
+
 
     def dump_model(self):
         with open(self.model_path, 'wb') as f:

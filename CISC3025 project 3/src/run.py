@@ -52,7 +52,7 @@ def main(action=None):
         try:
             classifier.model_path = '../models/9646-300iters.pkl'  # current best model
             classifier.load_model()
-            classifier.analyze('../data/input.txt')
+            print(classifier.analyze('../data/input.txt'))
         except Exception as e:
             print(e)
 
@@ -83,3 +83,4 @@ if __name__ == '__main__':
     # main('dev')
     # main('show')
     # main('debug')
+    main('analyze')
