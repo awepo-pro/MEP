@@ -236,15 +236,6 @@ class MEMM():
     def dump_model(self):
         with open(self.model_path, 'wb') as f:
             pickle.dump(self.classifier, f)
-
-    def load_model(self):
-        if self.model == '':
-            self.model = '..//models/model4 190008.pkl'
-            print('*************** no model ***********************')
-        with open(self.model, 'rb') as f:
-            self.classifier = pickle.load(f)
-
-# ************************* helper functions ************************* #
     
     def load_model(self):
         with open(self.model_path, 'rb') as f:
