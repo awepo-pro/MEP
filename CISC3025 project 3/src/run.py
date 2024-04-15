@@ -48,6 +48,12 @@ def main(action=None):
             classifier.debug_example()
         except Exception as e:
             print(e)
+    if arg.analyze or action == 'analyze':
+        try:
+            classifier.load_model()
+            classifier.analyze()
+        except Exception as e:
+            print(e)
 
 
 if __name__ == '__main__':
@@ -57,6 +63,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--dev', nargs='?', const=True, default=False)
     parser.add_argument('-s', '--show', nargs='?', const=True, default=False)
     parser.add_argument('-D', '--debug', nargs='?', const=True, default=False)
+    parser.add_argument('-a', '--analyze', nargs='?', const=True, default=False)
     arg = parser.parse_args()
 
     #====== Customization ======
