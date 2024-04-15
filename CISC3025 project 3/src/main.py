@@ -51,9 +51,10 @@ def main(action=None):
             print(e)
     if arg.analyze or action == 'analyze':
         try:
+            # ../../models/9646-300iters.pkl
             classifier.model_path = Path(__file__).parent.parent / 'models/9646-300iters.pkl'  # current best model
             classifier.load_model()
-            print(classifier.analyze(Path(__file__).parent.parent / 'data/input.txt'))
+            classifier.analyze(Path(__file__).parent.parent / '../web_demonstration/input.txt')
         except Exception as e:
             print(e)
 

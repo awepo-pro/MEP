@@ -137,10 +137,23 @@ textarea {
     /* height: 12em; */
     /* background: red; */
     font-size: 20px;
+    line-height: 1.5em;
 }
 
 .highlighted {
     background: #1C73E8;
-    padding: 5px;
+    padding: 2.5px 5px;
     border-radius: 10px;
+}
+
+.error {
+    color: red;
+}
+
+.wc {
+  position: relative;
+  /* background: red; */
+  top: -2em;
+  float: right;
+  right: 2em;
 }

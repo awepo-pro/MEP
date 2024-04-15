@@ -16,6 +16,7 @@ from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
 import time
+import json
 
 
 class MEMM():
@@ -190,7 +191,6 @@ class MEMM():
         _, labels, features = self._preprocess_data(self.dev_path)
         results = [self.classifier.classify(n) for n in features]
 
-        # use micro-average
         f_score = fbeta_score(labels, results, average='macro', beta=self.beta)
         precision = precision_score(labels, results, average='macro')
         recall = recall_score(labels, results, average='macro')
@@ -233,7 +233,10 @@ class MEMM():
         for n, word in enumerate(words):
             features = self.features_best_model(words, labels[-1], n)
             labels.append(self.classifier.classify(features))
-        return list(zip(words, labels[1:]))
+
+        output_file = open("../web_demonstration/output.json", "w")
+        json.dump([{'word' : w, 'label' : l} for w, l in zip(words, labels[1:])], output_file)
+
 
     @staticmethod
     def features_best_model(words, previous_label, position):
@@ -293,7 +296,7 @@ class MEMM():
         if position > 0:
             features[f'prev_prefix_{words[position-1][:3]}'] = 1
             features[f'prev_suffix_{words[position-1][-3:]}'] = 1
-
+        
         # TODO: check if the word is character or digit
         # Extract character n-grams
         char_bigrams = [''.join(bigram) for bigram in zip(current_word, current_word[1:])]
@@ -309,7 +312,10 @@ class MEMM():
         for trigram in char_trigrams:
             features[f'trigram_{trigram}'] = 1
 
-        features['2_prev_has_(%s)' % words[position - 2]] = 1 if position > 1 else 0
+        # this is possible that leads to error `list index out of range` if there is only 1 word
+        # solved!
+        if position > 1:
+            features['2_prev_has_(%s)' % words[position - 2]] = 1 
 
         # TODO: 'Billy' is a PERSON
         features['adjective'] = 1 if MEMM.adjective_like_suffix(current_word) else 0
