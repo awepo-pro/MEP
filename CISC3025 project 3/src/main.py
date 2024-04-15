@@ -10,6 +10,7 @@
 
 import argparse
 import timeit
+from pathlib import Path
 
 from MEM import MEMM
 
@@ -50,9 +51,9 @@ def main(action=None):
             print(e)
     if arg.analyze or action == 'analyze':
         try:
-            classifier.model_path = '../models/9646-300iters.pkl'  # current best model
+            classifier.model_path = Path(__file__).parent.parent / 'models/9646-300iters.pkl'  # current best model
             classifier.load_model()
-            print(classifier.analyze('../data/input.txt'))
+            print(classifier.analyze(Path(__file__).parent.parent / 'data/input.txt'))
         except Exception as e:
             print(e)
 
