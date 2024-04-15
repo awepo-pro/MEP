@@ -44,12 +44,12 @@ class MEMM():
         """ Baseline Features """
         current_word = words[position]
 
-        # unigram 
+        # unigram
         features['has_(%s)' % current_word] = 1
 
         features['prev_label'] = previous_label
         if position + 2 < len(previous_label):
-            features['next_label'] = previous_label[position + 2] 
+            features['next_label'] = previous_label[position + 2]
         if current_word[0].isupper():
             features['Titlecase'] = 1
 
@@ -170,7 +170,7 @@ class MEMM():
     def _preprocess_data(self, path):
         words, labels = self.load_data(path)
         previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]
+        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]  # type: ignore
 
         return words, labels, features
     
@@ -185,7 +185,7 @@ class MEMM():
         self.classifier = classifier
 
         self.record_train(features)
-    
+
     def test(self):
         print('Testing classifier...')
         _, labels, features = self._preprocess_data(self.dev_path)
@@ -204,13 +204,6 @@ class MEMM():
         self.record_test(f_score, accuracy, recall, precision)
 
         return True
-
-    def _preprocess_data(self, path):
-        words, labels = self.load_data(path)
-        previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]  # type: ignore
-
-        return words, labels, features
 
     def show_samples(self):
         """
