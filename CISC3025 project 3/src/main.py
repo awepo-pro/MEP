@@ -57,7 +57,6 @@ def main(action=None):
         except Exception as e:
             print(e)
 
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -84,4 +83,4 @@ if __name__ == '__main__':
     # main('dev')
     # main('show')
     # main('debug')
-    main('analyze')
+    # main('analyze')
