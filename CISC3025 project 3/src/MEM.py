@@ -226,6 +226,16 @@ class MEMM():
                     fmt += '  *LOW PROB*'
             print(fmt % (word, pdist.prob('PERSON'), pdist.prob('O')))
 
+    def analyze(self, file) -> list[tuple[str, Literal['O', 'Person']]]:
+        with open(file, 'r', encoding='utf-8') as f:
+            words = f.read().split()
+
+        labels: list[Literal['O', 'Person']] = ['O']
+        for word in words:
+            features = self.features(words, labels[-1], len(labels))
+            labels.append(self.classifier.classify(features))
+        return list(zip(words, labels[1:]))
+
     def dump_model(self):
         with open(self.model_path, 'wb') as f:
             pickle.dump(self.classifier, f)
