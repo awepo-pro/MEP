@@ -18,7 +18,7 @@
         </div>
     </header>
 
-    <?php $output = $output ?? ''; ?>
+    <?php $output = $output ?? ''; $input = $input ?? ''?>
 
         <div class="container">
             <div class="flex-child">
