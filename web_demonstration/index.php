@@ -54,8 +54,6 @@
         <div class="output">
             <p><?php echo $output ?></p>
         </div>
-
-        <div class="wc">word: <?php echo count($get_token) ?></div>
     </div>
 </body>
 
