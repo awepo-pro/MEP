@@ -16,7 +16,7 @@
     <header>
         <h1>NLP</h1>
         <div>
-            <h3>Name Entity</h3>
+            <h3>Named Entity</h3>
             <h3>Recognition</h3>
         </div>
     </header>

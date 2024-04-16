@@ -8,17 +8,12 @@
 # Last Modified: April 4th 2020, 17:45:05
 # --------------------------------------------------
 
-import os
-import re
 from typing import Literal
 
 from nltk import word_tokenize
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
-import time
-import json
-
 
 class MEMM():
     def __init__(self):
@@ -50,8 +45,6 @@ class MEMM():
         features['has_(%s)' % current_word] = 1
 
         features['prev_label'] = previous_label
-        if position + 2 < len(previous_label):
-            features['next_label'] = previous_label[position + 2]
         if current_word[0].isupper():
             features['Titlecase'] = 1
 
