@@ -12,6 +12,7 @@ import os
 import re
 from typing import Literal
 
+from nltk import word_tokenize
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
@@ -227,7 +228,8 @@ class MEMM():
 
     def analyze(self, file) -> list[tuple[str, Literal['O', 'Person']]]:
         with open(file, 'r', encoding='utf-8') as f:
-            words = f.read().split()
+            text = f.read()
+            words = word_tokenize(text)
 
         labels: list[Literal['O', 'Person']] = ['O']
         for n, word in enumerate(words):
