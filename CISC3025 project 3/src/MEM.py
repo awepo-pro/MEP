@@ -234,8 +234,7 @@ class MEMM():
             features = self.features_best_model(words, labels[-1], n)
             labels.append(self.classifier.classify(features))
 
-        output_file = open("../web_demonstration/output.json", "w")
-        json.dump([{'word' : w, 'label' : l} for w, l in zip(words, labels[1:])], output_file)
+        return list(zip(words, labels[1:]))
 
 
     @staticmethod

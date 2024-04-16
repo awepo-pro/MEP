@@ -9,6 +9,7 @@
 # --------------------------------------------------
 
 import argparse
+import json
 import timeit
 from pathlib import Path
 
@@ -54,7 +55,11 @@ def main(action=None):
             # ../../models/9646-300iters.pkl
             classifier.model_path = Path(__file__).parent.parent / 'models/9646-300iters.pkl'  # current best model
             classifier.load_model()
-            classifier.analyze(Path(__file__).parent.parent / '../web_demonstration/input.txt')
+            results = classifier.analyze(Path(__file__).parents[2] / 'web_demonstration/input.txt')
+
+            print(results)
+            with open(Path(__file__).parents[2] / "web_demonstration/output.json", "w") as output_file:
+                json.dump([{'word': w, 'label': l} for w, l in results], output_file)
         except Exception as e:
             print(e)
 
