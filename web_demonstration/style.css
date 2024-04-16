@@ -29,29 +29,42 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* This creates two columns of equal width */
+    grid-template-columns: 1fr 0.2fr 1fr; /* This creates two columns of equal width */
     color: white;
     width: 90%;
     margin: 0 auto;
     min-height: 100vh;
 }
 
-.flex-child form {
+.flex-child {
     width: 100%;                /* Ensures form takes full width of its parent */
-    height: 100%;               /* Optional: Ensures form takes full height of its parent */
+    height: 75%;               /* Optional: Ensures form takes full height of its parent */
 }
 
 textarea {
-    padding: 50px 50px 10px;
+    padding: 50px;
     border: none;
     outline: none;
     border-radius: 30px;
-    margin-top: 50px;
-    margin-bottom: 20px;
+    margin: 10% 0 0 20px;
     background: #ECE8F7;
     font-size: 20px;
     width: 100%;                /* Ensures form takes full width of its parent */
     height: 100%;               /* Optional: Ensures form takes full height of its parent */
+    line-height: 1.5em;
+    overflow: hidden;
+}
+
+.output {
+  margin-top: 10%;
+  border: 3px solid #32542D;
+  padding: 50px;
+  border-radius: 30px;
+  height: 99%;
+  width: 100%;
+  /* background: red; */
+  font-size: 20px;
+  line-height: 1.5em;
 }
 
 
@@ -127,17 +140,6 @@ textarea {
     padding-top: 3%;
     text-align: center;
     font-size: 3em;
-}
-
-.output {
-    margin-top: 10%;
-    border: 3px solid #32542D;
-    padding: 50px;
-    border-radius: 30px;
-    /* height: 12em; */
-    /* background: red; */
-    font-size: 20px;
-    line-height: 1.5em;
 }
 
 .highlighted {

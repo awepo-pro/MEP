@@ -1,5 +1,7 @@
 <?php
 $input = $_POST['input'] ?? '';  // Use the null coalescing operator to check for input
+$output = '';
+$word_count = 0;
 
 $input_file_path = "input.txt";
 if (!empty($input)) {
@@ -9,7 +11,8 @@ if (!empty($input)) {
         fclose($input_file);
 
         // Trigger NLP processing using shell_exec
-        shell_exec('"C:/Users/ACER/mambaforge/envs/CISC3025_NLP/python.exe" "C:\\Users\\ACER\\Documents\\Code\\MEP\\CISC3025 project 3\\src\\main.py" -a');
+        // shell_exec('"C:/Users/ACER/mambaforge/envs/CISC3025_NLP/python.exe" "C:\\Users\\ACER\\Documents\\Code\\MEP\\CISC3025 project 3\\src\\main.py" -a');
+        shell_exec('make run');
 
         // Load the processed tokens from output.json
         $tokensWithLabels = json_decode(file_get_contents('output.json'));
@@ -17,9 +20,12 @@ if (!empty($input)) {
         $inputText = file_get_contents('input.txt'); // Load the input text again for display purposes
         $output = '';
         $lastPosition = 0;
+        $word_count = 0;
+        $consective_word = false;
 
         foreach ($tokensWithLabels as $tokenWithLabel) {
             $position = strpos($inputText, $tokenWithLabel->word, $lastPosition);
+            $word_count += 1;
 
             if ($position === false) {
                 continue;  // Skip if the token can't be found
@@ -29,7 +35,16 @@ if (!empty($input)) {
             $output .= htmlspecialchars(substr($inputText, $lastPosition, $position - $lastPosition));
 
             // Highlight "PERSON" tokens
-            if ($tokenWithLabel->label === "PERSON") {
+            if ($consective_word) {
+                $output .= htmlspecialchars($tokenWithLabel->word) . '</span>';
+                $consective_word = $consective_word ? false : true;
+            } else if (
+                $tokenWithLabel->word == "Dr." || $tokenWithLabel->word == "Mr."
+                || $tokenWithLabel->word == "Mrs." || $tokenWithLabel->word == "Ms."
+                || $tokenWithLabel->word == "Miss"
+            ) {
+                $output .= '<span class="highlighted">' . htmlspecialchars($tokenWithLabel->word);
+            } else if ($tokenWithLabel->label == "PERSON") {
                 $output .= '<span class="highlighted">' . htmlspecialchars($tokenWithLabel->word) . '</span>';
             } else {
                 $output .= htmlspecialchars($tokenWithLabel->word);
@@ -51,6 +66,5 @@ if (!empty($input)) {
     $output = "No input provided.";
 }
 
-// Output the final processed text
-echo $output;
-?>
+$response = json_encode(array("result1" => $output, "result2" => $word_count));
+echo $response;

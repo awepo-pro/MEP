@@ -1,3 +1,6 @@
+<!-- declare $input variable -->
+<?php $input = ''; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,26 +21,28 @@
         </div>
     </header>
 
-    <?php $output = $output ?? ''; ?>
-
-        <div class="container">
-            <div class="flex-child">
-                <form id="nlpForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
-                    <textarea id="input" name="input" rows="1" cols="80"
-                        placeholder="simplicity is the ultimate sophistication......"><?php echo $input ?></textarea>
-                </form>
-            </div>
-
-            <div class="flex-child">
-                <h1 id="title2">Object and Person</h1>
-                <div class="output">
-                    <p id="output"><?php echo $output ?></p>
-                </div>
-            </div>
+    <div class="container">
+        <div class="flex-child">
+            <form id="nlpForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+                <textarea id="input" name="input" rows="19.5" cols="80"
+                    placeholder="simplicity is the ultimate sophistication......"><?php echo $input ?></textarea>
+            </form>
         </div>
 
+        <!-- empty space -->
+        <div></div>
+
+        <div class="flex-child">
+            <!-- <h1 id="title2">Object and Person</h1> -->
+            <div class="output">
+                <p id="output"><?php echo $output ?></p>
+            </div>
+            <div class="wc">word: <span id="wordCount"></span></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
-    <script>
+    <!-- <script>
         const textarea = document.getElementById('input');
 
         function autoResize() {
@@ -50,6 +55,7 @@
         // Event listener for input event
         textarea.addEventListener('input', autoResize);
         autoResize();
-    </script>
+    </script> -->
 </body>
+
 </html>

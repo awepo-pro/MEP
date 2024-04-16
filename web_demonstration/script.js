@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('nlpForm');
     const input = document.getElementById('input');
-    const outputDiv = document.getElementById('output');
+    const outputDiv1 = document.getElementById('output');
+    const outputDiv2 = document.getElementById('wordCount');
     let timer = null;  // Variable to keep track of the interval
 
     function sendData() {
@@ -15,9 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: formData
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            outputDiv.innerHTML = data;  // Display the processed data in the output div
+            outputDiv1.innerHTML = data.result1;  // Display the processed data in the output div
+            outputDiv2.innerHTML = data.result2;
         })
         .catch(error => console.error('Error:', error));
     }
