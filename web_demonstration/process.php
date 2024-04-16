@@ -45,6 +45,7 @@ if (!empty($input)) {
                 || $tokenWithLabel->word == "Miss"
             ) {
                 $output .= '<span class="highlighted">' . htmlspecialchars($tokenWithLabel->word);
+                $consective_word = true;
             } else if ($tokenWithLabel->label == "PERSON") {
                 $output .= '<span class="highlighted">' . htmlspecialchars($tokenWithLabel->word) . '</span>';
             } else {
@@ -58,6 +59,7 @@ if (!empty($input)) {
         // Append any remaining text after the last token
         $output .= htmlspecialchars(substr($inputText, $lastPosition));
         $output = nl2br($output);
+        $output = str_replace('</span> <span class="highlighted">', ' ', $output);
 
     } else {
         echo "<h1 class=\"error\">Cannot write to file. Check if the file exists and if PHP has write permissions.</h1>";
