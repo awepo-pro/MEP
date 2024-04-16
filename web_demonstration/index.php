@@ -10,23 +10,6 @@
 </head>
 
 <body>
-
-    <?php
-    $input = '';
-    if (isset($_POST['input'])) {
-        $input = $_POST["input"];
-
-        $input_file_path = "input.txt";
-        if (is_writable($input_file_path)) {
-            $input_file = fopen($input_file_path, "w");
-            fwrite($input_file, $input);
-            fclose($input_file);
-        } else {
-            echo "<h1 class=\"error\">Cannot write to file. Check if the file exists and if PHP has write permissions.</h1>";
-        }
-    }
-    ?>
-
     <header>
         <h1>NLP</h1>
         <div>
@@ -36,25 +19,34 @@
     </header>
 
     <div class="container">
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
-            <textarea id="input" name="input" rows="28" cols="80"
+        <form id="nlpForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+            <textarea id="input" name="input" rows="1" cols="80"
                 placeholder="simplicity is the ultimate sophistication......"><?php echo $input ?></textarea>
-
-            <br><br>
-
-            <button class="btn" value="submit">GO!</button>
         </form>
     </div>
 
-    <?php require_once ('display.php'); ?>
-
+    <?php $output = $output ?? ''; ?>
     <div class="container">
-
         <h1 id="title2">Object and Person</h1>
         <div class="output">
-            <p><?php echo $output ?></p>
+            <p id="output"><?php echo $output ?></p>
         </div>
     </div>
-</body>
 
+    <script src="script.js"></script>
+    <script>
+        const textarea = document.getElementById('input');
+
+        function autoResize() {
+            // Reset the height to shrink if text is deleted
+            textarea.style.height = 'auto';
+            // Set the height based on the scroll height of the textarea
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        // Event listener for input event
+        textarea.addEventListener('input', autoResize);
+        autoResize();
+    </script>
+</body>
 </html>
