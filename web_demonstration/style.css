@@ -28,18 +28,17 @@ body {
 }
 
 .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* This creates two columns of equal width */
     color: white;
-    width: 60%;
+    width: 90%;
     margin: 0 auto;
-    /* background: yellow; */
     min-height: 100vh;
 }
 
-.container form {
-    text-align: center;
-    /* border: 1px solid #161616; */
-    border-radius: 30px;
-    /* background: red; */
+.flex-child form {
+    width: 100%;                /* Ensures form takes full width of its parent */
+    height: 100%;               /* Optional: Ensures form takes full height of its parent */
 }
 
 textarea {
@@ -51,6 +50,8 @@ textarea {
     margin-bottom: 20px;
     background: #ECE8F7;
     font-size: 20px;
+    width: 100%;                /* Ensures form takes full width of its parent */
+    height: 100%;               /* Optional: Ensures form takes full height of its parent */
 }
 
 

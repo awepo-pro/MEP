@@ -18,20 +18,23 @@
         </div>
     </header>
 
-    <div class="container">
-        <form id="nlpForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
-            <textarea id="input" name="input" rows="1" cols="80"
-                placeholder="simplicity is the ultimate sophistication......"><?php echo $input ?></textarea>
-        </form>
-    </div>
-
     <?php $output = $output ?? ''; ?>
-    <div class="container">
-        <h1 id="title2">Object and Person</h1>
-        <div class="output">
-            <p id="output"><?php echo $output ?></p>
+
+        <div class="container">
+            <div class="flex-child">
+                <form id="nlpForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+                    <textarea id="input" name="input" rows="1" cols="80"
+                        placeholder="simplicity is the ultimate sophistication......"><?php echo $input ?></textarea>
+                </form>
+            </div>
+
+            <div class="flex-child">
+                <h1 id="title2">Object and Person</h1>
+                <div class="output">
+                    <p id="output"><?php echo $output ?></p>
+                </div>
+            </div>
         </div>
-    </div>
 
     <script src="script.js"></script>
     <script>
