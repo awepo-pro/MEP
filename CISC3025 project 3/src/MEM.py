@@ -45,8 +45,6 @@ class MEMM():
         features['has_(%s)' % current_word] = 1
 
         features['prev_label'] = previous_label
-        if position + 2 < len(previous_label):
-            features['next_label'] = previous_label[position + 2]
         if current_word[0].isupper():
             features['Titlecase'] = 1
 
