@@ -231,6 +231,13 @@ class MEMM():
             text = f.read()
             words = word_tokenize(text)
 
+            # Fix treebank tokenization converting double quotes to two single quotes
+            for word in words:
+                if word == "''":
+                    words[words.index(word)] = '"'
+                elif word == "``":
+                    words[words.index(word)] = '"'
+
         labels: list[Literal['O', 'Person']] = ['O']
         for n, word in enumerate(words):
             features = self.features_best_model(words, labels[-1], n)
