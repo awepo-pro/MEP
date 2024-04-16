@@ -3,7 +3,7 @@
 $inputText = file_get_contents('input.txt');
 
 if (!empty($input)) {
-    shell_exec('"C:/Users/ACER/mambaforge/envs/CISC3025_NLP/python.exe" "C:\Users\ACER\Documents\Code\MEP\CISC3025 project 3\src\main.py" -a');
+    shell_exec('make run');;
 }
 
 $tokensWithLabels = json_decode(file_get_contents('output.json')); // accsociative array
