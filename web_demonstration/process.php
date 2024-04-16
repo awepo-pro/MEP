@@ -35,6 +35,7 @@ if (!empty($input)) {
             $output .= htmlspecialchars(substr($inputText, $lastPosition, $position - $lastPosition));
 
             // Highlight "PERSON" tokens
+            // if encounter 'Mr., Miss, Dr........' then highlight the next word as well
             if ($consective_word) {
                 $output .= htmlspecialchars($tokenWithLabel->word) . '</span>';
                 $consective_word = $consective_word ? false : true;

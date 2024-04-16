@@ -4,6 +4,10 @@
     box-sizing: border-box;
     font-family: "Open Sans", sans-serif;
     text-decoration: none;
+
+    font-family: "Sedan", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 a {
