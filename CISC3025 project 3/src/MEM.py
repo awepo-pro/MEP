@@ -8,17 +8,12 @@
 # Last Modified: April 4th 2020, 17:45:05
 # --------------------------------------------------
 
-import os
-import re
 from typing import Literal
 
 from nltk import word_tokenize
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
 import pickle
-import time
-import json
-
 
 class MEMM():
     def __init__(self):
