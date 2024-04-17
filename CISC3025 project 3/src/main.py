@@ -56,6 +56,11 @@ def main(action=None):
             classifier.model_path = Path(__file__).parent.parent / 'models/9646-300iters.pkl'  # current best model
             classifier.load_model()
             results = classifier.analyze(Path(__file__).parents[2] / 'web_demonstration/input.txt')
+            if arg.analyze is not True:
+                analyze_path = Path(arg.analyze)
+            else:
+                analyze_path = Path(__file__).parents[2] / 'web_demonstration/input.txt'
+            results = classifier.analyze(analyze_path)
 
             print(results)
             with open(Path(__file__).parents[2] / "web_demonstration/output.json", "w") as output_file:
@@ -70,7 +75,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--dev', nargs='?', const=True, default=False)
     parser.add_argument('-s', '--show', nargs='?', const=True, default=False)
     parser.add_argument('-D', '--debug', nargs='?', const=True, default=False)
-    parser.add_argument('-a', '--analyze', nargs='?', const=True, default=False)
+    parser.add_argument('-a', '--analyze', type=str, nargs='?', metavar='input_file', help='Analyze a text file', const=True, default=False)
     arg = parser.parse_args()
 
     #====== Customization ======
