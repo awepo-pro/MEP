@@ -12,7 +12,7 @@ if (!empty($input)) {
 
         // Trigger NLP processing using shell_exec
         // shell_exec('"C:/Users/ACER/mambaforge/envs/CISC3025_NLP/python.exe" "C:\\Users\\ACER\\Documents\\Code\\MEP\\CISC3025 project 3\\src\\main.py" -a');
-        shell_exec('make run');
+        shell_exec('python3 ../CISC3025\ project\ 3/src/main.py -a');
 
         // Load the processed tokens from output.json
         $tokensWithLabels = json_decode(file_get_contents('output.json'));
