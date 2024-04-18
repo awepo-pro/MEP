@@ -165,7 +165,7 @@ class MEMM():
     def _preprocess_data(self, path):
         words, labels = self.load_data(path)
         previous_labels = ["O"] + labels
-        features = [self.features(words, previous_labels[i], i) for i in range(len(words))]  # type: ignore
+        features = [self.features_best_model(words, previous_labels[i], i) for i in range(len(words))]  # type: ignore
 
         return words, labels, features
     
