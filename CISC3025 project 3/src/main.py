@@ -55,7 +55,7 @@ def main(action=None):
             # ../../models/9646-300iters.pkl
             classifier.model_path = Path(__file__).parent.parent / 'models/9646-300iters.pkl'  # current best model
             classifier.load_model()
-            if arg.analyze is not True:
+            if arg.analyze is not True and action is None:
                 analyze_path = Path(arg.analyze)
             else:
                 analyze_path = Path(__file__).parents[2] / 'web_demonstration/input.txt'
