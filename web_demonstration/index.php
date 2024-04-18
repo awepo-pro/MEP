@@ -30,7 +30,7 @@
     <div class="container">
         <div class="flex-child">
             <form id="nlpForm" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>">
-                <textarea id="input" name="input" rows="19.5" cols="80"
+                <textarea id="input" name="input" rows="23" cols="80"
                     placeholder="simplicity is the ultimate sophistication......"><?php echo $input ?></textarea>
             </form>
         </div>

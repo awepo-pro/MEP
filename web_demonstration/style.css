@@ -42,7 +42,7 @@ body {
 
 .flex-child {
     width: 100%;                /* Ensures form takes full width of its parent */
-    height: 75%;               /* Optional: Ensures form takes full height of its parent */
+    height: 77%;               /* Optional: Ensures form takes full height of its parent */
 }
 
 textarea {
@@ -56,7 +56,7 @@ textarea {
     width: 100%;                /* Ensures form takes full width of its parent */
     height: 100%;               /* Optional: Ensures form takes full height of its parent */
     line-height: 1.5em;
-    overflow: hidden;
+    /* overflow: scroll; */
 }
 
 .output {
