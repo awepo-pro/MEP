@@ -40,9 +40,9 @@ if (!empty($input)) {
                 $output .= htmlspecialchars($tokenWithLabel->word) . '</span>';
                 $consective_word = $consective_word ? false : true;
             } else if (
-                $tokenWithLabel->word == "Dr." || $tokenWithLabel->word == "Mr."
-                || $tokenWithLabel->word == "Mrs." || $tokenWithLabel->word == "Ms."
-                || $tokenWithLabel->word == "Miss"
+                $tokenWithLabel->word == "Dr." || $tokenWithLabel->word == "Mr." || $tokenWithLabel->word == "Mr"
+                || $tokenWithLabel->word == "Mrs." || $tokenWithLabel->word == "Ms." || $tokenWithLabel->word == "Ms"
+                || $tokenWithLabel->word == "Mrs" || $tokenWithLabel->word == "Miss"
             ) {
                 $output .= '<span class="highlighted">' . htmlspecialchars($tokenWithLabel->word);
                 $consective_word = true;
