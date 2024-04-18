@@ -10,6 +10,7 @@
 
 from typing import Literal
 
+import numpy as np
 from nltk import word_tokenize
 from nltk.classify.maxent import MaxentClassifier
 from sklearn.metrics import (accuracy_score, fbeta_score, precision_score, recall_score)
@@ -231,12 +232,44 @@ class MEMM():
                 elif word == "``":
                     words[words.index(word)] = '"'
 
-        labels: list[Literal['O', 'Person']] = ['O']
-        for n, word in enumerate(words):
-            features = self.features_best_model(words, labels[-1], n)
-            labels.append(self.classifier.classify(features))
+        # Define possible states for labels
+        states = ['O', 'PERSON']
 
-        return list(zip(words, labels[1:]))
+        # Initialize Viterbi matrix and backpointer matrix
+        viterbi = np.zeros((len(states), len(words)))
+        backpointer = np.zeros((len(states), len(words)), dtype=int)
+
+        # Initialize the Viterbi matrix for the first word
+        for s in range(len(states)):
+            features = self.features_best_model(words, states[s], 0)
+            # Using log probabilities to avoid underflow
+            prob_dist = self.classifier.prob_classify(features)
+            viterbi[s, 0] = np.log(prob_dist.prob(states[s]) + 1e-10)
+
+        # Fill the Viterbi matrix for words from 1 to N
+        for t in range(1, len(words)):
+            for s in range(len(states)):
+                max_prob = float('-inf')
+                best_state = 0
+                for sp in range(len(states)):
+                    features = self.features_best_model(words, states[sp], t)
+                    transition_prob = np.log(self.classifier.prob_classify(features).prob(states[s]) + 1e-10)
+                    prob = viterbi[sp, t - 1] + transition_prob
+                    if prob > max_prob:
+                        max_prob = prob
+                        best_state = sp
+                viterbi[s, t] = max_prob
+                backpointer[s, t] = best_state
+
+        # Backtrack to find the best path
+        best_path = []
+        last_state = np.argmax(viterbi[:, -1])
+        best_path.append(states[last_state])
+        for t in range(len(words) - 1, 0, -1):
+            last_state = backpointer[last_state, t]
+            best_path.insert(0, states[last_state])
+
+        return list(zip(words, best_path))
 
 
     @staticmethod
