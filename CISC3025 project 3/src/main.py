@@ -82,9 +82,9 @@ if __name__ == '__main__':
     BETA = 0.5
     MAX_ITER = 10
     BOUND = (0, 20)
-    MODEL_PATH = '../model.pkl'
+    MODEL_PATH = '../models/9646-300iters.pkl'
     DEBUG_PATH = '../data/dev'
-    USE_CUSTOM_FEATURES = True
+    USE_CUSTOM_FEATURES = False
     #==========================
 
     main()
