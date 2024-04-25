@@ -61,6 +61,10 @@ def main(action=None):
                 analyze_path = Path(__file__).parents[2] / 'web_demonstration/input.txt'
             results = classifier.analyze(analyze_path)
 
+            # with open('group.10.out', 'w') as f:
+            #     for w, l in results:
+            #         f.write(f'{w}\t{l}\n')
+
             print(results)
             with open(Path(__file__).parents[2] / "web_demonstration/output.json", "w") as output_file:
                 json.dump([{'word': w, 'label': l} for w, l in results], output_file)
