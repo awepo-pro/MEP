@@ -165,5 +165,8 @@ cython_debug/
 **/model.pkl
 
 # mac
-*.DS_Store
+*DS_Store
+
+# output
+web_demonstration/output.json
 
