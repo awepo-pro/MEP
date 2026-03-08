@@ -1,0 +1,80 @@
+    def features(self, words: list, previous_label, position):
+        """
+        Note: The previous label of current word is the only visible label.
+
+        :param words: a list of the words in the entire corpus
+        :param previous_label: the label for position-1 (or O if it's the start
+                of a new sentence)
+        :param position: the word you are adding features for
+        """
+
+        features = {}
+        """ Baseline Features """
+        current_word: str = words[position]
+        features['has_(%s)' % current_word] = 1
+        features['prev_label'] = previous_label
+        if current_word[0].isupper():
+            features['Titlecase'] = 1
+
+        features['no_of_vowels'] = sum([1 for i in current_word if i in 'aeiou'])
+        features['no_of_consonants'] = sum([1 for i in current_word if i in 'bcdfghjklmnpqrstvwxyz'])
+        features['no_of_caps'] = sum([1 for i in current_word if i.isupper()])  # useful
+        features['contains_digits'] = 1 if any(i.isdigit() for i in current_word) else 0  # useful
+        features['prev_no_of_caps'] = sum([1 for i in words[position-1] if i.isupper()]) if position > 0 else 0
+        features['prev_contains_digits'] = 1 if position > 0 and any(i.isdigit() for i in words[position-1]) else 0
+        features['all_caps'] = 1 if current_word.isupper() else 0
+        features['length'] = len(current_word)
+        features['prev_length'] = len(words[position-1]) if position > 0 else 0
+        features['next_length'] = len(words[position+1]) if position < len(words)-1 else 0
+        if position > 0:
+            features[f'prev_has_{words[position - 1]}'] = 1
+        if position < len(words)-1:
+            features[f'next_has_{words[position + 1]}'] = 1
+
+        features['consecutive_words'] = 0
+        i = position
+        while i < len(words):
+            if words[i].isalpha():
+                features['consecutive_words'] += 1
+                i += 1
+            else:
+                break
+
+        features['prev_consecutive_words'] = 0
+        i = position
+        while i >= 0:
+            if words[i].isalpha():
+                features['prev_consecutive_words'] += 1
+                i -= 1
+            else:
+                break
+
+        features[f'prefix_{current_word[:3]}'] = 1
+        features[f'suffix_{current_word[-3:]}'] = 1
+        if position > 0:
+            features[f'prev_prefix_{words[position-1][:3]}'] = 1
+            features[f'prev_suffix_{words[position-1][-3:]}'] = 1
+
+        # Extract character n-grams
+        char_bigrams = [''.join(bigram) for bigram in zip(current_word, current_word[1:])]
+        char_trigrams = [''.join(trigram) for trigram in zip(current_word, current_word[1:], current_word[2:])]
+
+        # Add n-gram features
+        for char in current_word:
+            features[f'char_{char}'] = 1
+        for bigram in char_bigrams:
+            features[f'bigram_{bigram}'] = 1
+        for trigram in char_trigrams:
+            features[f'trigram_{trigram}'] = 1
+
+        features['2_prev_has_(%s)' % words[position - 2]] = 1 if position > 1 else 0
+        features['adverb_like_suffix'] = 1 if self.adverb_like_suffix(current_word) else 0
+        features['adjective_like_suffix'] = 1 if self.adjective_like_suffix(current_word) else 0
+        features['prev_adjective_like_suffix'] = 1 if position > 0 and self.adjective_like_suffix(words[position - 1]) else 0
+        features['prev_adverb_like_suffix'] = 1 if position > 0 and self.adverb_like_suffix(words[position - 1]) else 0
+        features['apos_in_middle'] = 1 if "'" in current_word[1:-1] else 0
+        features['next_has_apos_in_middle'] = 1 if position < len(words)-1 and "'" in words[position+1][1:-1] else 0
+        features['alphabetical'] = 1 if current_word.isalpha() else 0
+        features['prev_alphabetical'] = 1 if position > 0 and words[position-1].isalpha() else 0
+
+        return features

@@ -1,0 +1,31 @@
+************************* config *************************
+beta: 0.5
+max_iter: 300
+model: ../models/model5 14:13:37.pkl
+
+************************* train *************************
+features used:
+has_()
+prev_label
+Titlecase
+no_of_vowels
+no_of_consonants
+no_of_caps_greater_2
+all_caps
+contains_digits
+prev_no_of_caps
+prev_contains_digits
+length
+prev_length
+next_length
+has_()
+consecutive_words
+prev_consecutive_words
+prefix_
+suffix_
+char_E
+char_U
+bigram_
+has_()
+adjective
+adverb
