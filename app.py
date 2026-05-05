@@ -7,6 +7,7 @@ Run with: uvicorn app:app --reload
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import pickle, os
 import config
@@ -87,8 +88,10 @@ def analyze(req: AnalyzeRequest):
     finally:
         os.unlink(tmp_path)
 
-
 # ── Serve the frontend ─────────────────────────────────────────────────────────
 @app.get("/", response_class=HTMLResponse)
 def index():
     return open("index.html", encoding="utf-8").read()
+
+if os.path.exists("static"):
+    app.mount("/", StaticFiles(directory="static"), name="static")
